@@ -1,8 +1,35 @@
+import requests
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
+
+# Suppress only the InsecureRequestWarning from urllib3 needed for this example
+requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 def display_word(word, guessed_letters):
     return ' '.join([letter if letter in guessed_letters else '_' for letter in word])
 
+
+def get_random_word():
+    api_url = "https://random-word-api.herokuapp.com/word"
+    
+    try:
+        # Make a GET request to the API
+        response = requests.get(api_url)
+
+        # Check if the request was successful (status code 200)
+        if response.status_code == 200:
+            # Extract the word from the response
+            word = response.json()[0]
+            return word
+        else:
+            print(f"Error: {response.status_code}")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+# Example usage
+# random_word = get_random_word()
+# print("Random word:", random_word)
+
 print("Hello")
-word = 'watermelon'
+word = get_random_word()
 point = 0
 guess_count = 6
 guessed_letters = []
